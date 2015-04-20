@@ -3,7 +3,7 @@
 # 
 
 import time
-
+import psycopg2
 ## Database connection
 DB = []
 
@@ -16,8 +16,10 @@ def GetAllPosts():
       pointing to the post content, and 'time' key pointing to the time
       it was posted.
     '''
-    posts = [{'content': str(row[1]), 'time': str(row[0])} for row in DB]
-    posts.sort(key=lambda row: row['time'], reverse=True)
+    db = psycopg2.connect("dbname=forum")
+	c = db.curson()
+	c.execute("SELECT * FROM posts ORDER BY time DESC;")
+	posts = db.fetchall()
     return posts
 
 ## Add a post to the database.
