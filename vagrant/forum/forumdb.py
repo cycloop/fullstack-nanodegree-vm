@@ -17,9 +17,9 @@ def GetAllPosts():
       it was posted.
     '''
     db = psycopg2.connect("dbname=forum")
-	c = db.curson()
-	c.execute("SELECT * FROM posts ORDER BY time DESC;")
-	posts = db.fetchall()
+    c = db.curson()
+    c.execute("SELECT * FROM posts ORDER BY time DESC;")
+    posts = db.fetchall()
     return posts
 
 ## Add a post to the database.
