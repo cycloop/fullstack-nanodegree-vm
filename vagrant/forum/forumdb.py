@@ -17,9 +17,9 @@ def GetAllPosts():
       it was posted.
     '''
     db = psycopg2.connect("dbname=forum")
-    c = db.curson()
+    c = db.cursor()
     c.execute("SELECT * FROM posts ORDER BY time DESC;")
-    posts = db.fetchall()
+    posts = c.fetchall()
     db.close()
     return posts
 
@@ -32,8 +32,9 @@ def AddPost(content):
     '''
     db = psycopg2.connect("dbname=forum")
     t = time.strftime('%c', time.localtime())
-    c = db.execute("INSERT INTO posts('content','time') VALUES ('"+content+",'"+t+"')")
-	db.commit()
-	db.close()
+    c = db.cursor()
+    c.execute("INSERT INTO posts('content','time') VALUES ('"+content+",'"+t+"')")
+    db.commit()
+    db.close()
     
    
