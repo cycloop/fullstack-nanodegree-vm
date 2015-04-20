@@ -20,7 +20,7 @@ def GetAllPosts():
     c = db.curson()
     c.execute("SELECT * FROM posts ORDER BY time DESC;")
     posts = db.fetchall()
-	db.close()
+    db.close()
     return posts
 
 ## Add a post to the database.
