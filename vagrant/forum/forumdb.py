@@ -19,8 +19,9 @@ def GetAllPosts():
     db = psycopg2.connect("dbname=forum")
     c = db.cursor()
     c.execute("SELECT * FROM posts ORDER BY time DESC;")
-    posts = c.fetchall()
+    rows = c.fetchall()
     db.close()
+    posts = [{'content':str(row[0]), 'time': str(row[1])}  for row in rows]
     return posts
 
 ## Add a post to the database.
@@ -31,9 +32,8 @@ def AddPost(content):
       content: The text content of the new post.
     '''
     db = psycopg2.connect("dbname=forum")
-    t = time.strftime('%c', time.localtime())
     c = db.cursor()
-    c.execute("INSERT INTO posts(content, time) VALUES ('"+content+",'"+t+"')")
+    c.execute("INSERT INTO posts(content) VALUES ( %s )" , (content,))
     db.commit()
     db.close()
     
