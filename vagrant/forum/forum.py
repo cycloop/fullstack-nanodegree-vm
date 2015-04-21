@@ -9,6 +9,7 @@ import forumdb
 import cgi
 from wsgiref.simple_server import make_server
 from wsgiref import util
+import bleach
 
 # HTML template for the forum page
 HTML_WRAP = '''\
@@ -18,7 +19,7 @@ HTML_WRAP = '''\
     <title>DB Forum</title>
     <style>
       h1, form { text-align: center; }
-      textarea { width: 400px; height: 100px; }
+      textarea { width: 500px; height: 100px; }
       div.post { border: 1px solid #999;
                  padding: 10px 10px;
 		 margin: 10px 20%%; }
@@ -72,6 +73,7 @@ def Post(env, resp):
         fields = cgi.parse_qs(postdata)
         content = fields['content'][0]
         # If the post is just whitespace, don't save it.
+        content = bleach.clean(content)
         content = content.strip()
         if content:
             # Save it in the database
